@@ -25,6 +25,8 @@ services:
     working_dir: /application
     volumes:
     - .:/application
+    - ${FRONT_UPLOADS}
+    - ${BACK_UPLOADS}
     - ./phpdocker/nginx/default.conf:/etc/nginx/includes.d/default.conf
     - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
 
@@ -37,4 +39,14 @@ services:
     working_dir: /application
     volumes:
     - .:/application
+    - ${FRONT_UPLOADS}
+    - ${BACK_UPLOADS}
     - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+
+  commands:
+    build: phpdocker/php-fpm
+    container_name: commands
+    command: chmod 777 -R uploads frontend/runtime backend/runtime
+    volumes:
+      - .:/application
+

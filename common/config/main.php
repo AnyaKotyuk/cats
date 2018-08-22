@@ -3,7 +3,8 @@ return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
-        '@uploadsdir' => '@app/uploads'
+        '@uploadsdir' => '@root/uploads',
+        '@uploads' => '/uploads',
     ],
     'name' => "Cat club",
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
@@ -17,15 +18,5 @@ return [
             'rules' => [
             ],
         ],
-//        'assetManager' => [
-//            'bundles' => [
-//                'yii\boostrap\BootstrapAsset' => [
-//                    'sourcePath' => '@npm/bootstrap/dist'
-//                ],
-//                'yii\bootstrap\BootstrapPluginAsset' => [
-//                    'sourcePath' => '@npm/bootstrap/dist'
-//                ]
-//            ]
-//        ]
     ],
 ];

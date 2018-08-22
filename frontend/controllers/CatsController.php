@@ -5,6 +5,8 @@ use yii\web\Controller;
 use common\models\Cats;
 use Yii;
 use yii\helpers\Url;
+use yii\web\UploadedFile;
+use yii\imagine\Image;
 
 class CatsController extends Controller
 {
@@ -28,7 +30,17 @@ class CatsController extends Controller
         $model = new Cats();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->save();
+
+            $model->picture = UploadedFile::getInstance($model, 'picture');
+            if ($model->picture) {
+                $image_path = Yii::getAlias('@uploadsdir/'.$model->picture->baseName.'.'.$model->picture->extension);
+                $model->picture->saveAs($image_path);
+                Image::resize($image_path, 300, 200)->save();
+            }
+
+            if ($model->save());
+
+
             return $this->redirect(Url::to('/cats/'));
         } else {
             return $this->render('create', [

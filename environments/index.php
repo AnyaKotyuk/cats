@@ -45,6 +45,10 @@ return [
             'backend/config/main-local.php',
             'frontend/config/main-local.php',
         ],
+        'createSymlink' => [
+            'backend/web/uploads' => 'uploads',
+            'frontend/web/uploads' => 'uploads',
+        ],
     ],
     'Production' => [
         'path' => 'prod',
@@ -60,6 +64,10 @@ return [
         'setCookieValidationKey' => [
             'backend/config/main-local.php',
             'frontend/config/main-local.php',
+        ],
+        'createSymlink' => [
+            'backend/web/uploads' => 'uploads',
+            'frontend/web/uploads' => 'uploads',
         ],
     ],
 ];
