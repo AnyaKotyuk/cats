@@ -1,2 +1,2 @@
-mysql -u root -p"pass" -e "CREATE DATABASE test; USE test; SOURCE /storage/dump.sql;"
+mysql -u root -p"pass" -e "CREATE DATABASE cats; USE cats; SOURCE /storage/dump.sql;"
 echo "Dump is imported!"
