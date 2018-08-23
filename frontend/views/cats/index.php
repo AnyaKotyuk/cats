@@ -15,7 +15,7 @@ use yii\helpers\Html;
             <?php foreach ($pets as $pet) { ?>
                 <div class="col-md-6">
                     <a href="<?= Url::to(['cats/view', 'name' => $pet->name]) ?>">
-                        <img src="<?= ($pet->picture)?Url::to('@uploads/'.$pet->picture):'/images/default-cat.jpg' ?>">
+                        <img src="<?= Yii::$app->thumbnail->get($pet->picture, [300, 200]) ?>">
                         <h3><?= $pet->name;?></h3>
                         <div><?= $pet->description;?></div>
                     </a>
