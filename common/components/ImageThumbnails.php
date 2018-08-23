@@ -9,12 +9,12 @@ use Yii;
 class ImageThumbnails extends Component
 {
 
-    private $thumbnailsSisez = [];
+    private $thumbnailsSizes = [];
 
     public function init()
     {
         parent::init();
-        $this->thumbnailsSisez = [[300, 200], [600, 400]];
+        $this->thumbnailsSizes = [[300, 200], [600, 400]];
     }
 
     public function save($model, $attr)
@@ -23,7 +23,7 @@ class ImageThumbnails extends Component
         if ($uploader) {
             $image_path = Yii::getAlias('@uploadsdir/'.$uploader->baseName.'.'.$uploader->extension);
             $uploader->saveAs($image_path);
-            foreach ($this->thumbnailsSisez as $size) {
+            foreach ($this->thumbnailsSizes as $size) {
                 $thumb = Yii::getAlias('@uploadsdir/'.$uploader->baseName).'-'.$size[0].'x'.$size[1].'.'.$uploader->extension;
                 Image::resize($image_path, $size[0], $size[1])->save($thumb);
             }

@@ -16,6 +16,9 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                [
+                    'class' => '\common\components\CatUrlRule'
+                ]
             ],
         ],
         'thumbnail' => [

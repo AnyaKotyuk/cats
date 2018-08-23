@@ -41,4 +41,9 @@ class CatsController extends Controller
         }
     }
 
+    public function actionView()
+    {
+        return $this->render('view');
+    }
+
 }
