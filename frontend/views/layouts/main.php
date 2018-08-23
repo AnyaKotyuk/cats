@@ -35,6 +35,7 @@ AppAsset::register($this);
             'class' => 'navbar navbar-expand-sm navbar-light bg-light',
         ],
     ]);
+//    echo '<img style="width: 40px" src="'.\yii\helpers\Url::to('/images/logo.png').'"';
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'Cats', 'url' => ['/cats']],

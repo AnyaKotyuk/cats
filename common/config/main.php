@@ -18,5 +18,8 @@ return [
             'rules' => [
             ],
         ],
+        'thumbnail' => [
+            'class' => 'common\components\ImageThumbnails'
+        ]
     ],
 ];
