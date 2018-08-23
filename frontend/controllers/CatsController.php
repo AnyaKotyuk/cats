@@ -41,9 +41,10 @@ class CatsController extends Controller
         }
     }
 
-    public function actionView()
+    public function actionView($name)
     {
-        return $this->render('view');
+        $cat = Cats::findOne(['name' => $name]);
+        return $this->render('view', ['cat' => $cat]);
     }
 
 }

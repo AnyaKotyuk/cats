@@ -27,8 +27,9 @@ CREATE TABLE `cats` (
   `name` varchar(50) NOT NULL DEFAULT '',
   `picture` varchar(255) DEFAULT NULL,
   `description` text,
+  `publish_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,8 +38,36 @@ CREATE TABLE `cats` (
 
 LOCK TABLES `cats` WRITE;
 /*!40000 ALTER TABLE `cats` DISABLE KEYS */;
-INSERT INTO `cats` VALUES (3,'test','',NULL),(4,'Vasya','',NULL),(5,'Max','','Very good cat');
+INSERT INTO `cats` VALUES (5,'Max','','Very good cat','2018-08-23 14:50:50'),(6,'Petya','kocka_2_tvari_-_nahled.jpg','Maecenas sed diam eget risus varius blandit sit amet non magna. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla.\n','2018-08-23 14:50:50'),(7,'Pussy','cat-2083492_960_720.jpg','Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Fusce dapibus, tellus ac cursus commodo. Donec ullamcorper nulla non metus.\r\n\r\n\r\nTortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo. Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.\r\n\r\nEget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.','2018-08-23 14:51:38');
 /*!40000 ALTER TABLE `cats` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `comments`
+--
+
+DROP TABLE IF EXISTS `comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `text` text,
+  `cat_id` int(11) DEFAULT NULL,
+  `published_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cat_id` (`cat_id`),
+  CONSTRAINT `cats_fk` FOREIGN KEY (`cat_id`) REFERENCES `cats` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comments`
+--
+
+LOCK TABLES `comments` WRITE;
+/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -76,4 +105,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-22 13:49:47
+-- Dump completed on 2018-08-23 15:07:39
