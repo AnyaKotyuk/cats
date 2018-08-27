@@ -5,6 +5,7 @@ use yii\web\Controller;
 use common\models\Cats;
 use Yii;
 use yii\helpers\Url;
+use common\models\Comments;
 
 class CatsController extends Controller
 {
@@ -23,16 +24,18 @@ class CatsController extends Controller
      *
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($id = null)
     {
-        $model = new Cats();
+
+        if ($id) {
+            $model = Cats::findOne($id);
+        } else {
+            $model = new Cats();
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
             $model->picture = Yii::$app->thumbnail->save($model, 'picture');
-
             $model->save();
-
             return $this->redirect(Url::to('/cats/'));
         } else {
             return $this->render('create', [
@@ -44,7 +47,11 @@ class CatsController extends Controller
     public function actionView($name)
     {
         $cat = Cats::findOne(['name' => $name]);
-        return $this->render('view', ['cat' => $cat]);
+        $comments = Comments::findAll(['cat_id' => $cat->id]);
+        return $this->render('view', [
+            'cat' => $cat,
+            'comments' => $comments,
+        ]);
     }
 
 }

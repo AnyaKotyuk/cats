@@ -57,12 +57,24 @@ AppAsset::register($this);
     NavBar::end();
     ?>
 
-    <div class="container">
+    <div class="container-fluid">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
-        <?= $content ?>
+
+        <div class="row wrapper">
+            <div class="col-md-2 col-xs-1 p-l-0 p-r-0 collapse in" id="sidebar">
+                <ul>
+                    <li><?= Html::a("Cats", ['/cats']) ?></li>
+                </ul>
+            </div>
+            <main class="col-md-10 col-xs-11 p-l-2 p-t-2">
+                <a href="#sidebar" data-toggle="collapse" onclick="$(this).parent().toggleClass('col-md-10'); $(this).parent().toggleClass('col-md-12')"><i class="fa fa-navicon fa-lg">Open/Close</i></a>
+                <hr>
+                <?= $content ?>
+            </main>
+        </div>
     </div>
 </div>
 

@@ -1,6 +1,6 @@
 <?php
 
-
+use yii\helpers\Html;
 ?>
 
 <div class="row">
@@ -14,4 +14,15 @@
             <?= $cat->description ?>
         </div>
     </div>
+</div>
+<div class="comments">
+    <?= Html::a("add comment", ['/comments/add', 'cat_id' => $cat->id], ['class' => 'btn btn-primary']) ?>
+    <?php if(!empty($comments)) { ?>
+        <hr>
+        <ul>
+            <?php foreach ($comments as $comment) { ?>
+                <li><?= $comment->text ?></li>
+            <?php } ?>
+        </ul>
+    <?php } ?>
 </div>
