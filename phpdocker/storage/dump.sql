@@ -38,7 +38,7 @@ CREATE TABLE `cats` (
 
 LOCK TABLES `cats` WRITE;
 /*!40000 ALTER TABLE `cats` DISABLE KEYS */;
-INSERT INTO `cats` VALUES (5,'Max','','Very good cat','2018-08-23 14:50:50'),(6,'Petya','kocka_2_tvari_-_nahled.jpg','Maecenas sed diam eget risus varius blandit sit amet non magna. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla.\n','2018-08-23 14:50:50'),(7,'Pussy','cat-2083492_960_720.jpg','Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Fusce dapibus, tellus ac cursus commodo. Donec ullamcorper nulla non metus.\r\n\r\n\r\nTortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo. Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.\r\n\r\nEget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.','2018-08-23 14:51:38');
+INSERT INTO `cats` VALUES (5,'Max',NULL,'I too have a long haired cat who hates being brushed, particularly his belly and under his legs. I\'ve had to bring him to the vet to get matting shaved out as some of the matting was getting pretty tight against the skin and wasn\'t safe to just snip out. I\'ve snipped out loose matting before myself (keeping a comb between the mat and the scissors) but I\'d be reluctant to recommend it here as a cat\'s skin can be so delicate I\'d worry about injury. ','2018-08-23 14:50:50'),(6,'Petya','unnamed.jpg','Maecenas sed diam eget risus varius blandit sit amet non magna. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla.\r\n','2018-08-23 14:50:50'),(7,'Pussy','cat-2083492_960_720.jpg','Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Fusce dapibus, tellus ac cursus commodo. Donec ullamcorper nulla non metus.\r\n\r\n\r\nTortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo. Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.\r\n\r\nEget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.','2018-08-23 14:51:38');
 /*!40000 ALTER TABLE `cats` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +58,7 @@ CREATE TABLE `comments` (
   PRIMARY KEY (`id`),
   KEY `cat_id` (`cat_id`),
   CONSTRAINT `cats_fk` FOREIGN KEY (`cat_id`) REFERENCES `cats` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,32 @@ CREATE TABLE `comments` (
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+INSERT INTO `comments` VALUES (1,'dsdsd',5,'2018-08-27 14:17:51',NULL),(2,'dsdsd',5,'2018-08-27 14:18:27',NULL),(3,'fddffd',5,'2018-08-27 14:18:32',NULL);
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `migration`
+--
+
+DROP TABLE IF EXISTS `migration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `migration` (
+  `version` varchar(180) NOT NULL,
+  `apply_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `migration`
+--
+
+LOCK TABLES `migration` WRITE;
+/*!40000 ALTER TABLE `migration` DISABLE KEYS */;
+INSERT INTO `migration` VALUES ('m000000_000000_base',1535367441),('m130524_201442_init',1535367444);
+/*!40000 ALTER TABLE `migration` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -79,11 +104,19 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `auth_key` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `status` smallint(6) NOT NULL DEFAULT '10',
+  `created_at` int(11) NOT NULL,
+  `updated_at` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `password_reset_token` (`password_reset_token`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +125,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin',10,'admin');
+INSERT INTO `user` VALUES (1,'admin','1','1','1','1',10,1,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -105,4 +138,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-27 10:40:08
+-- Dump completed on 2018-08-27 15:45:04
