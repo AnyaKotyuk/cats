@@ -2,7 +2,6 @@
 namespace common\components;
 
 use yii\base\Component;
-use yii\base\Model;
 use yii\web\UploadedFile;
 use yii\imagine\Image;
 use Yii;
@@ -24,17 +23,16 @@ class ImageThumbnails extends Component
      *
      * @param Model $model
      * @param string $attr - Model attribute name
-     * @return null|UploadedFile
+     * @return UploadedFile
      */
     public function save($model, $attr)
     {
         $uploader = UploadedFile::getInstance($model, $attr);
         if ($uploader) {
-            $image_path = Yii::getAlias('@uploadsdir/'.$uploader->baseName.'.'.$uploader->extension);
-            $uploader->saveAs($image_path);
+            $imagePath = Yii::getAlias('@uploadsdir/'.$uploader->baseName.'.'.$uploader->extension);
+            $uploader->saveAs($imagePath);
             foreach ($this->thumbnailsSizes as $size) {
-                $thumb = $this->getImageWithSize($image_path, $size);
-                Image::resize($image_path, $size[0], $size[1])->save($thumb);
+                $this->thumb($imagePath, $size);
             }
         }
         return $uploader;
@@ -44,23 +42,59 @@ class ImageThumbnails extends Component
      * Get full image absolute path
      *
      * @param string $image
-     * @param string $size
-     * @return string
+     * @param array $size [width, height]
+     * @return string image url
      */
-    public function get($image, $size = 'full')
+    public function get($image, $size = [])
     {
-        if (!empty($image)) {
-            $image = Yii::getAlias('@uploads/'.$image);
-            $thumbImage = $this->getImageWithSize($image, $size);
+        $imagePath = Yii::getAlias('@uploadsdir/'.$image);
+        $imageUrl = Yii::getAlias('@uploads/'.$image);
+
+        if (empty($size) || !in_array($size, $this->thumbnailsSizes)) {
+            return file_exists($imagePath)?$imageUrl:$this->DEFAULT_IMAGE;
         }
 
-        if (empty($thumbImage) || !$this->imageExists($thumbImage)) {
-            $thumbImage = $this->getImageWithSize($this->DEFAULT_IMAGE, $size);
-            if (!$this->imageExists($thumbImage)) {
-                $thumbImage = $this->getImageWithSize($this->DEFAULT_IMAGE, 'full');
-            }
+        if (empty($image)) {
+            $imagePath = Yii::getAlias('@webroot'.$this->DEFAULT_IMAGE);
+            $imageThumbnail = $this->thumb($imagePath, $size);
+            return str_replace(Yii::getAlias('@webroot'), Yii::getAlias('@web'), $imageThumbnail);
         }
-        return $thumbImage;
+
+        if ($imageThumbnail = $this->thumb($imagePath, $size)) {
+            return str_replace(Yii::getAlias('@uploadsdir'), Yii::getAlias('@uploads'), $imageThumbnail);
+        }
+
+        return $this->DEFAULT_IMAGE;
+    }
+
+    /**
+     * Get image rel path;
+     * If image doesn't exist we try to save it
+     *
+     * @param string $image
+     * @param array $size
+     * @return bool|string
+     */
+    private function thumb($image, $size)
+    {
+        $imageThumb = $this->getImageWithSize($image, $size);
+
+        if (file_exists($imageThumb)) {
+            return $imageThumb;
+        }
+
+        if (!file_exists($image)) {
+            return false;
+        }
+
+        $image_data = getimagesize($image);
+        if (($image_data[0] < $size[0] && $image_data[1] < $size[1])) {
+            return $image;
+        }
+
+        if (Image::thumbnail($image, $size[0], $size[1])->save($imageThumb)) {
+            return $imageThumb;
+        }
     }
 
     /**
@@ -72,7 +106,7 @@ class ImageThumbnails extends Component
      */
     private function getImageWithSize($image, $size)
     {
-        if ($size == 'full') {
+        if (empty($size)) {
             return $image;
         }
         $image_data = explode('.', $image);
@@ -82,17 +116,5 @@ class ImageThumbnails extends Component
             $image = $img_name.'-'.$size[0].'x'.$size[1].'.'.$img_ext;
         }
         return $image;
-    }
-
-    /**
-     * Check does image really exists
-     *
-     * @param $image
-     * @return bool
-     */
-    private function imageExists($image)
-    {
-        $rel_path = str_replace(Yii::getAlias('@uploads'), Yii::getAlias('@uploadsdir'), $image);
-        return file_exists($rel_path)?true:false;
     }
 }
