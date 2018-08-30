@@ -1,29 +1,37 @@
 <?php
 
+use yii\helpers\Html;
 use yii\grid\GridView;
 
-echo GridView::widget([
-    'dataProvider' => $catsProvider,
-    'filterModel' => $catsSearch,
-    'columns' => [
-        'id',
-        'name',
-        [
-            'header' => 'Description',
-            'content' => function($model) {
-                return \yii\helpers\StringHelper::truncate($model->description, 100);
-            }
+/* @var $this yii\web\View */
+/* @var $searchModel app\backend\models\CatSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Cats';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="cat-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a('Create Cat', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'name',
+            'picture',
+            'description:ntext',
+            'publish_date',
+
+            ['class' => 'yii\grid\ActionColumn'],
         ],
-        [
-            'header' => 'Picture',
-            'content' => function($model) {
-                            return '<img src="'.Yii::$app->thumbnail->get($model->picture, [100, 100]).'">';
-            }
-        ],
-        [
-            'header' => 'Actions',
-            'class' => \yii\grid\ActionColumn::className(),
-            'template' => '{update} {view}'
-        ]
-    ]
-]);
+    ]); ?>
+</div>

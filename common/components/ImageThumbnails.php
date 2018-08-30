@@ -15,7 +15,7 @@ class ImageThumbnails extends Component
     public function init()
     {
         parent::init();
-        $this->thumbnailsSizes = [[100, 100], [300, 200], [600, 400]];
+        $this->thumbnailsSizes = [[100, 100], [300, 200], [400, 300], [600, 400]];
     }
 
     /**

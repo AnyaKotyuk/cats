@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\Cats;
 use Yii;
@@ -9,6 +10,22 @@ use common\models\Comments;
 
 class CatsController extends Controller
 {
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => 'yii\filters\AccessControl',
+                'only' => ['create'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@']
+                    ]
+                ]
+            ]
+        ];
+    }
 
     public function actionIndex()
     {
