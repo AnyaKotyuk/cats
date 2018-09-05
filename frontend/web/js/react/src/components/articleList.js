@@ -1,10 +1,11 @@
 import React, {Component} from "react";
+import { connect } from "react-redux";
+
+const mapStateToProps = state => {
+    return {articles: state.articles}
+};
 
 class ArticleList extends Component{
-
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         const articles = this.props.articles;
@@ -12,4 +13,4 @@ class ArticleList extends Component{
     }
 }
 
-export default ArticleList;
+export default connect(mapStateToProps)(ArticleList);
