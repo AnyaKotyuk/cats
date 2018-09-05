@@ -217,4 +217,9 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    public function actionReact()
+    {
+        return $this->render('react');
+    }
 }
