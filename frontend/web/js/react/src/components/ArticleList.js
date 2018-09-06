@@ -9,7 +9,12 @@ class ArticleList extends Component{
 
     render() {
         const articles = this.props.articles;
-        return <ul>{articles.map(el => <li key={el.id}>{el.title}</li>)}</ul>
+        return (
+            <div>
+                <h2>List</h2>
+                <ul>{articles.map(el => <li key={el.id}>{el.title}</li>)}</ul>
+            </div>
+        )
     }
 }
 

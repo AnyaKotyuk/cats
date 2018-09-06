@@ -2,14 +2,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import './index.css';
 import App from './App';
-import { Provider } from "react-redux";
-import store from "./store/index";
 
-document.addEventListener("DOMContentLoaded", function(event) {
+window.renderApp = function(component, id) {
     render(
-        <Provider store={store}>
-            <App />
-        </Provider>,
-        document.getElementById('root')
+        <App component={component} />,
+        document.getElementById(id)
     );
-});
+};
+
